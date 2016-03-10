@@ -1,2 +1,3 @@
 == Dette er et kult prosjekt == 
-vi skal bruke readme loldan merge conflict skal oppstå
+vi skal bruke readme til å demonstrere hvordan merge conflict skal oppstå
+
