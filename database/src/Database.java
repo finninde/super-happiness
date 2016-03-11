@@ -16,22 +16,6 @@ public class Database {
     static final String PASS = "hunter2";
     static final String filePath = "src/createdb.sql";
 
-    private static String statementLoader(String filePath){
-        try{File f = new File(filePath);
-        FileInputStream fin = new FileInputStream(f);
-        byte[] buffer = new byte[(int) f.length()];
-        new DataInputStream(fin).readFully(buffer);
-        fin.close();
-        String s = new String(buffer, "ASCII");
-        return s;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return "";
-        }
-
-    }
-
     public static void main(String[] args) {
         Connection conn = null;
         Statement stmt = null;
@@ -44,8 +28,7 @@ public class Database {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             ScriptRunner runner = new ScriptRunner(conn, false, false);
-            String file = filePath;
-            runner.runScript(new BufferedReader(new FileReader(file)));
+            runner.runScript(new BufferedReader(new FileReader(filePath)));
             System.out.println("Database created successfully...");
         }catch(SQLException se){
             //Handle errors for JDBC
