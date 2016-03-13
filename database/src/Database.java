@@ -3,9 +3,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class Database {
-    // JDBC driver name and database URL
-    static final String deiteibeise= "";
-
+    // Remember to add JDBC DRIVER to classpath
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     // Autoreconnect=true is very convenient while useSSL=false is often necessary
     static final String DB_URL = "jdbc:mysql://localhost:3306/db?autoReconnect=true&useSSL=false";
@@ -24,12 +22,27 @@ public class Database {
             Class.forName("com.mysql.jdbc.Driver");
 
             // Open a connection
-            System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            //TODO: Generalize so that this is only done once.
+            //TODO: Script does not initialize database db nor check for it
+            // Uncomment these lines for db initialization, keep in mind CREATE DATABASE db; must be run manually
+            /*ScriptRunner runner = new ScriptRunner(conn, false, false);
+            String file = filePath;
+            runner.runScript(new BufferedReader(new FileReader(file)));*/
+            // Resultset is from the package SQL
+            ResultSet rs;
+            // This is how we insert data remember to toString any data inserted in the SQL Query
+            // The test table is meant for testing so that I wouldn't need to write that much code.
+            //stmt.executeUpdate("INSERT INTO test (ID, finnerkul) VALUES (1,2)");
+            // This is how we retrieve data, resultsets start as root and needs to be iterated to access the datafields
+            rs = stmt.executeQuery("SELECT * FROM test");
+            // We iterate the resultset and write out all the values in the finnerkul table
+            while (rs.next()) {
+                int finnerkul = rs.getInt("finnerkul");
+                System.out.println("finnerkul: " + finnerkul);
+            }
 
-            ScriptRunner runner = new ScriptRunner(conn, false, false);
-            runner.runScript(new BufferedReader(new FileReader(filePath)));
-            System.out.println("Database created successfully...");
         }catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
@@ -50,6 +63,5 @@ public class Database {
                 se.printStackTrace();
             }
         }
-        System.out.println("Goodbye!");
     }
 }
