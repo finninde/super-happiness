@@ -34,6 +34,7 @@ public class Database {
             ResultSet rs;
             // This is how we insert data remember to toString any data inserted in the SQL Query
             // The test table is meant for testing so that I wouldn't need to write that much code.
+            // The test table should be as follows CREATE TABLE test (ID int NOT NULL, finnerkul INT, PRIMARY KEY(ID));
             //stmt.executeUpdate("INSERT INTO test (ID, finnerkul) VALUES (1,2)");
             // This is how we retrieve data, resultsets start as root and needs to be iterated to access the datafields
             rs = stmt.executeQuery("SELECT * FROM test");
