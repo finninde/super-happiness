@@ -50,7 +50,7 @@ ADD COLUMN exercise VarChar(50),
 ADD FOREIGN KEY fk_name(exercise) REFERENCES db.exercise(name)
 ;
 
-ALTER TABLE note
+ALTER TABLE notes
 ADD COLUMN sessionID int NOT NULL,
 ADD FOREIGN KEY fk_name(sessionID) REFERENCES db.session(sessionID)
 ;
