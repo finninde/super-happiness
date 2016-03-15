@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.Scanner;
 import java.util.Random;
 
@@ -11,9 +13,12 @@ public class TextUserInterface {
                     "4: get monthly best\n" +
                     "5: Exit this abomination\n" +
                     "Write your choice here: ";
+    Database database = null;
     // Here we generate IDs for sessions
-
-    public static void main(String[] args) {
+    public TextUserInterface(Database database){
+        this.database = database;
+    }
+    public void menu() {
         boolean running = true;
         while (running) {
             Scanner reader = new Scanner(System.in);  // Reading from System.in
@@ -21,7 +26,7 @@ public class TextUserInterface {
             int n = reader.nextInt();
             switch (n) {
                 case 1:
-                    if (createSession(reader) == true) {
+                    if (createSession(reader, this.database) == true) {
                         System.out.println("Entry created successfull");
                     } else {
                         System.out.println("Entry already exists");
@@ -47,37 +52,40 @@ public class TextUserInterface {
         }
     }
 
-    public static boolean createSession(Scanner reader) {
+    public static boolean createSession(Scanner reader, Database database) {
         //TODO:Take values by scanner reader as above
-        Random rand = null;
-        int sessionID = rand.nextInt((20000 - 0) + 1);
+        Scanner scnr = new Scanner(System.in);
+
+        System.out.println("You need to make ze key");
+        int sessionID = reader.nextInt();
         System.out.println("Insert date: ");
-        String date = reader.nextLine();
+        String date = scnr.nextLine();
         System.out.println("Insert durationInMinutes: ");
         int durationInMinutes = reader.nextInt();
         System.out.println("Insert form[0-10]: ");
         int form = reader.nextInt();
         System.out.println("Insert performance: ");
         int performance = reader.nextInt();
-        System.out.println("Is this a template? [1/0]: ");
+        System.out.println("Is this a template? [true/false]: ");
         boolean isTemplate = reader.nextBoolean();
         System.out.println("Was it outdoor? [1/0]: ");
         boolean isOutdoor = reader.nextBoolean();
         System.out.println("What was the temperature in celsius: ?");
         int temperature = reader.nextInt();
         System.out.println("Describe the weather for me [50 chars]: ");
-        String weather = reader.next();
+        String weather = scnr.nextLine();
         System.out.println("Describe the airquality: ");
         int airQuality = reader.nextInt();
         System.out.println("Describe the ventilation: ");
         int ventilation = reader.nextInt();
         System.out.println("How many people watched: ");
         int peopleWatchingMe = reader.nextInt();
-        //TODO: insert these values into db
-        Database.createSession(SessionID, date, durationInMinutes, form, performance,
+
+        if (database.createSession(sessionID, date, durationInMinutes, form, performance,
                 isTemplate, isOutdoor, temperature, weather, airQuality, ventilation,
-                peopleWatchingMe);
-        return true;
+                peopleWatchingMe)){
+        return true;}
+        else {return false;}
     }
 }
 

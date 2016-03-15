@@ -1,3 +1,4 @@
+import javax.xml.crypto.Data;
 import java.io.*;
 import java.sql.*;
 import java.util.Scanner;
@@ -13,8 +14,54 @@ public class Database {
     static final String USER = "user";
     static final String PASS = "hunter2";
     static final String filePath = "src/createdb.sql";
+    Connection conn = null;
+
+    public Database(){
+        try {
+            this.conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        }
+        catch (SQLException sql){
+            sql.printStackTrace();
+        }
+        try {
+            ScriptRunner runner = new ScriptRunner(conn, false, false);
+            runner.runScript(new BufferedReader(new FileReader(filePath)));
+        } catch (IOException e) {
+            System.out.println("Database already initialized");
+            //e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public boolean createSession(int SessionID, String date, int durationInMinutes, int form, int performance,
+                         boolean isTemplate, boolean isOutdoor, int temperature, String weather, int airQuality, int ventilation,
+                         int peopleWatchingMe){
+        Statement stmt = null;
+        try {
+            stmt = this.conn.createStatement();
+        } catch (SQLException e) {
+            System.out.println("Creation of statement failed.");
+            e.printStackTrace();
+        }
+        try {
+            System.out.println( "INSERT INTO session (sessionID, date, durationInMinutes, form, performance, isTemplate, " +
+                    "isOutDoor, temperature, weatherType, airQuality, ventilation,peopleWatchingMe) " +
+                    "VALUES(" + SessionID + "," +  date + "," +  durationInMinutes + "," +  form + "," + performance + "," + isTemplate + "," +
+                    isOutdoor + "," + temperature + "," +  weather + "," + airQuality + "," + ventilation + "," + peopleWatchingMe + ")");
+            stmt.executeUpdate( "INSERT INTO session (sessionID, date, durationInMinutes, form, performance, isTemplate, " +
+                                "isOutDoor, temperature, weatherType, airQuality, ventilation,peopleWatchingMe) " +
+                                "VALUES(" + SessionID + ","  + "\"" + date + "\"" + "," +  durationInMinutes + "," +  form + "," + performance + "," + isTemplate + "," +
+                                isOutdoor + "," + temperature + "," + "\"" + weather + "\"" + "," + airQuality + "," + ventilation + "," + peopleWatchingMe + ")");
+        } catch (SQLException e) {
+            System.out.println("Key collision Already exists");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
     public static void main(String[] args) {
+        // MAIN IS NOW ONLY FOR DOCUMENTATION AND TUTORIAL PURPOSES
         Connection conn = null;
         Statement stmt = null;
         try{
@@ -34,8 +81,7 @@ public class Database {
             ResultSet rs;
             // This is how we insert data remember to toString any data inserted in the SQL Query
             // The test table is meant for testing so that I wouldn't need to write that much code.
-            // The test table should be as follows CREATE TABLE test (ID int NOT NULL, finnerkul INT, PRIMARY KEY(ID));
-            //stmt.executeUpdate("INSERT INTO test (ID, finnerkul) VALUES (1,2)");
+            stmt.executeUpdate("INSERT INTO test (ID, finnerkul) VALUES (1,2)");
             // This is how we retrieve data, resultsets start as root and needs to be iterated to access the datafields
             rs = stmt.executeQuery("SELECT * FROM test");
             // We iterate the resultset and write out all the values in the finnerkul table
