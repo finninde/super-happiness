@@ -11,7 +11,8 @@ public class TextUserInterface {
                     "2: Show existing templates\n" +
                     "3: Modify a previous session\n" +
                     "4: Compare last result with best\n" +
-                    "5: Exit this abomination\n" +
+					"5: Get all your notes\n"+
+                    "6: Exit this abomination\n" +
                     "Write your choice here: ";
     Database database = null;
     // Here we generate IDs for sessions
@@ -42,7 +43,10 @@ public class TextUserInterface {
                 case 4:
                     compareResult(reader, this.database);
                     break;
-                case 5:
+				case 5:
+					getNotes(reader,this.database);
+					break;
+                case 6:
                     System.out.println("goodbye!");
                     running = false;
                     break;
