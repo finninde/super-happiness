@@ -33,6 +33,28 @@ public class Database {
             e.printStackTrace();
         }
     }
+	
+	public void getNotes(){
+    	
+    	ResultSet rs;
+    	Statement stmt = null;
+    	try{
+    		stmt = conn.createStatement();
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	try{
+    		rs = stmt.executeQuery("SELECT * FROM notes");
+    		while (rs.next()){System.out.println("hei2");
+    			System.out.println("ID: "+rs.getString("noteID")+"\nPurpose: "+rs.getString("purpose")+"\nTips: "+rs.getString("tips"));
+    		}
+    	}
+    	catch(Exception ex){
+    		ex.printStackTrace();
+    	}
+    }
+	
     public String getExercises(){
         ResultSet rs;
         Statement stmt = null;

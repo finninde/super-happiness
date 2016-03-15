@@ -52,6 +52,10 @@ public class TextUserInterface {
     public static void compareResult(Scanner reader, Database database){
         database.compareResult();
     }
+	
+	public void getNotes(Scanner reader,Database database){
+    	database.getNotes();
+    }
     public static void showTemplate(Database database){
         System.out.println(database.getTemplates());
     }
