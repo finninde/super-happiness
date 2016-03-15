@@ -37,8 +37,8 @@ CREATE TABLE exercise(
   reps    int    NOT NULL,
   sets    int    NOT NULL
 );
-CREATE TABLE goal(
-  goalID int  NOT NULL,
+CREATE TABLE exerciseresult(
+  exerciseresultID int  NOT NULL,
   PRIMARY KEY(goalID),
   isCardio        BOOL,
   length_KM    double    NOT NULL,
@@ -64,7 +64,7 @@ ADD FOREIGN KEY fk_name(sessionID) REFERENCES db.session(sessionID)
 
 ALTER TABLE db.exercise
 ADD COLUMN goalID int,
-ADD FOREIGN KEY fk_name1(goalID) REFERENCES db.goal(goalID)
+ADD FOREIGN KEY fk_name1(goalID) REFERENCES db.exerciseresult(exerciseresultID)
 ;
 
 ALTER TABLE db.exercise
@@ -77,7 +77,7 @@ ADD COLUMN groupID int,
 ADD FOREIGN KEY fk_name3(groupID) REFERENCES db.groups(ID)
 ;
 
-ALTER TABLE db.goal
+ALTER TABLE db.exerciseresult
 ADD COLUMN exercise VarChar(50),
 ADD FOREIGN KEY fk_name(exercise) REFERENCES db.exercise(name)
 ;
