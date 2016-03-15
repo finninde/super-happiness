@@ -114,32 +114,69 @@ public class Database {
     }
 
 
-    public boolean createSession(int SessionID, String date, int durationInMinutes, int form, int performance,
-                         boolean isTemplate, boolean isOutdoor, int temperature, String weather, int airQuality, int ventilation,
-                         int peopleWatchingMe){
-        Statement stmt = null;
-        try {
-            stmt = this.conn.createStatement();
-        } catch (SQLException e) {
-            System.out.println("Creation of statement failed.");
-            e.printStackTrace();
-        }
-        try {
-            System.out.println( "INSERT INTO session (sessionID, date, durationInMinutes, form, performance, isTemplate, " +
-                    "isOutDoor, temperature, weatherType, airQuality, ventilation,peopleWatchingMe) " +
-                    "VALUES(" + SessionID + "," +  date + "," +  durationInMinutes + "," +  form + "," + performance + "," + isTemplate + "," +
-                    isOutdoor + "," + temperature + "," +  weather + "," + airQuality + "," + ventilation + "," + peopleWatchingMe + ")");
-            stmt.executeUpdate( "INSERT INTO session (sessionID, date, durationInMinutes, form, performance, isTemplate, " +
-                                "isOutDoor, temperature, weatherType, airQuality, ventilation,peopleWatchingMe) " +
-                                "VALUES(" + SessionID + ","  + "\"" + date + "\"" + "," +  durationInMinutes + "," +  form + "," + performance + "," + isTemplate + "," +
-                                isOutdoor + "," + temperature + "," + "\"" + weather + "\"" + "," + airQuality + "," + ventilation + "," + peopleWatchingMe + ")");
-        } catch (SQLException e) {
-            System.out.println("Key collision Already exists");
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
+	public boolean createSessionFromTemplate(int templateID, int SessionID, String date, int form, int performance, 
+			int	temperature, String weather, int airQuality, int ventilation, int peopleWatchingMe){
+		Statement stmt = null;
+		try {
+			stmt = this.conn.createStatement();
+		} catch (SQLException e) {
+			System.out.println("Creation of statement failed.");
+			e.printStackTrace();
+		}
+		try {
+			String query = "SELECT durationInMinutes, isOutDoor, exerciseID FROM template WHERE templateID= ;" + templateID;
+			ResultSet rs = stmt.executeQuery(query);
+			rs.first();
+			int durationInMinutes = rs.getInt(1);
+			boolean isOutDoor = rs.getBoolean(2);
+			int exerciseID = rs.getInt(3);
+			
+			this.createSession(SessionID, date, durationInMinutes, form, performance, false, isOutDoor, temperature, weather, airQuality, ventilation, peopleWatchingMe);
+			//TODO Implementer konstruksjonen av template, har kolonnene templateID (int),durationInMinutes isOutDoor(bool), exerciseID(int)
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return true;
+		
+	}
+	
+	public boolean createSession(int SessionID, String date, int durationInMinutes, int form, int performance,
+			boolean isTemplate, boolean isOutdoor, int temperature, String weather, int airQuality, int ventilation,
+			int peopleWatchingMe){
+		Statement stmt = null;
+		try {
+			stmt = this.conn.createStatement();
+		} catch (SQLException e) {
+			System.out.println("Creation of statement failed.");
+			e.printStackTrace();
+		}
+		try {
+			System.out.println( "INSERT INTO session (sessionID, date, durationInMinutes, form, performance, isTemplate, " +
+					"isOutDoor, temperature, weatherType, airQuality, ventilation,peopleWatchingMe) " +
+					"VALUES(" + SessionID + ","  + "\"" + date + "\"" + "," +  durationInMinutes + "," +  form + "," + performance + "," + isTemplate + "," +
+					isOutdoor + "," + temperature + "," + "\"" + weather + "\"" + "," + airQuality + "," + ventilation + "," + peopleWatchingMe + ")");
+			stmt.executeUpdate( "INSERT INTO session (sessionID, date, durationInMinutes, form, performance, isTemplate, " +
+					"isOutDoor, temperature, weatherType, airQuality, ventilation,peopleWatchingMe) " +
+					"VALUES(" + SessionID + ","  + "\"" + date + "\"" + "," +  durationInMinutes + "," +  form + "," + performance + "," + isTemplate + "," +
+					isOutdoor + "," + temperature + "," + "\"" + weather + "\"" + "," + airQuality + "," + ventilation + "," + peopleWatchingMe + ")");
+		} catch (SQLException e) {
+			System.out.println("Key collision Already exists");
+			e.printStackTrace();
+			return false;
+		}
+		try {
+			if(isTemplate==true){
+				stmt.executeUpdate( "INSERT INTO template (templateID, durationInMinutes, isOutDoor) " +
+									"VALUES(" + SessionID + "," + durationInMinutes + "," + isOutdoor + ")");
+									
+				System.out.println("Template saved!");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
 
     public static void main(String[] args) {
         // MAIN IS NOW ONLY FOR DOCUMENTATION AND TUTORIAL PURPOSES
