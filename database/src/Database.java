@@ -33,6 +33,30 @@ public class Database {
             e.printStackTrace();
         }
     }
+    public String getExercises(){
+        ResultSet rs;
+        Statement stmt = null;
+        String exercises = "";
+        try {
+            stmt = conn.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            rs = stmt.executeQuery("SELECT * FROM exercise");
+            while (rs.next()) {
+                String res = rs.getString("name");
+                exercises = exercises + ", " + res;
+            }
+
+            return exercises;
+        }catch (SQLException sql){
+            sql.printStackTrace();
+        }
+        return "NAN";
+    }
+
+
     public boolean createSession(int SessionID, String date, int durationInMinutes, int form, int performance,
                          boolean isTemplate, boolean isOutdoor, int temperature, String weather, int airQuality, int ventilation,
                          int peopleWatchingMe){
