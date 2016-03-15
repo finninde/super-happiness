@@ -8,7 +8,7 @@ public class TextUserInterface {
             "Hello and welcome to Fantastix(tm) sports app 420\n" +
                     "These are your choices write desired number then return\n" +
                     "1: Create a new session\n" +
-                    "2: Copy from existing session\n" +
+                    "2: Show existing templates\n" +
                     "3: Modify a previous session\n" +
                     "4: Compare last result with best\n" +
                     "5: Exit this abomination\n" +
@@ -33,8 +33,7 @@ public class TextUserInterface {
                     }
                     break;
                 case 2:
-                    //TODO: call proper function
-                    System.out.println("Not yet implemented");
+                    showTemplate(this.database);
                     break;
                 case 3:
                     //TODO: call proper function
@@ -50,13 +49,15 @@ public class TextUserInterface {
             }
         }
     }
-
     public static void compareResult(Scanner reader, Database database){
         database.compareResult();
     }
+    public static void showTemplate(Database database){
+        System.out.println(database.getTemplates());
+    }
+
 
     public static boolean createSession(Scanner reader, Database database) {
-        //TODO:Take values by scanner reader as above
         Scanner scnr = new Scanner(System.in);
 
         System.out.println("You need to make ze key");
@@ -83,7 +84,9 @@ public class TextUserInterface {
         int ventilation = reader.nextInt();
         System.out.println("How many people watched: ");
         int peopleWatchingMe = reader.nextInt();
-
+        System.out.println("What exercise did you do. Possible exercises are these");
+        System.out.println(database.getExercises());
+        String exerciseName  = scnr.nextLine();
         if (database.createSession(sessionID, date, durationInMinutes, form, performance,
                 isTemplate, isOutdoor, temperature, weather, airQuality, ventilation,
                 peopleWatchingMe)){

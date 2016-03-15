@@ -84,3 +84,12 @@ ALTER TABLE db.groups
 ADD COLUMN exercise VarChar(50),
 ADD FOREIGN KEY fk_name2(exercise) REFERENCES db.exercise(name)
 ;
+CREATE TABLE template(templateID int NOT NULL,  durationInMinutes int NOT NULL,  isOutDoor boolean NOT NULL,  exerciseID varchar(50), PRIMARY KEY(templateID), FOREIGN KEY (exerciseID) REFERENCES exercise(name));
+
+INSERT INTO exerciseresult(exerciseresultID, isCardio, length_KM, length_minutes, weight, reps, sets) VALUES (1, true, 2, 2, 2, 2, 2);
+INSERT INTO exerciseresult(exerciseresultID, isCardio, length_KM, length_minutes, weight, reps, sets) VALUES (2, true, 2, 2, 2, 2, 2);
+INSERT INTO exerciseresult(exerciseresultID, isCardio, length_KM, length_minutes, weight, reps, sets) VALUES (3, false, 0, 0, 420, 2, 2);
+INSERT INTO exerciseresult(exerciseresultID, isCardio, length_KM, length_minutes, weight, reps, sets) VALUES (4, false, 0, 0, 360, 2, 2);
+
+INSERT INTO exercise (name, description, isCardio, length_KM, length_minutes, weight, reps, sets) VALUES ("Gainz ecercise", "SUPER STRENGTH Maximizes gains", FALSE , 0, 30, 420, 12, 4);
+INSERT INTO exercise (name, description, isCardio, length_KM, length_minutes, weight, reps, sets) VALUES ("Super Cardio", "SUPER CARDIO Maximizes air intake", TRUE , 420, 9000, 0, 1, 1);

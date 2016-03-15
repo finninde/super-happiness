@@ -1,0 +1,27 @@
+// Execute a query
+            //System.out.println("Creating database...");
+            //stmt = conn.createStatement();
+
+            //String s = Database.statementLoader(filePath);
+            //TODO: Initialize with our sql script.
+            //String sql = "CREATE DATABASE db;";
+            //stmt.executeUpdate(sql);
+            //System.out.println(s);
+            //stmt.executeUpdate(s);
+            //stmt.execute(s);
+            //stmt.executeBatch(s);
+            private static String statementLoader(String filePath){
+                    try{File f = new File(filePath);
+                    FileInputStream fin = new FileInputStream(f);
+                    byte[] buffer = new byte[(int) f.length()];
+                    new DataInputStream(fin).readFully(buffer);
+                    fin.close();
+                    String s = new String(buffer, "ASCII");
+                    return s;
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                        return "";
+                    }
+
+                }
