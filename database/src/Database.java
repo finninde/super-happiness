@@ -56,6 +56,63 @@ public class Database {
         return "NAN";
     }
 
+    public void compareResult(){
+        ResultSet rs;
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            rs = stmt.executeQuery("SELECT isCardio, length_KM, weight FROM exerciseresult");
+            double highestWeight = 0;
+            double longestLength = 0;
+            double lastWeight = 0;
+            double lastLength = 0;
+            boolean lastResult = false;
+
+
+            while (rs.next()) {
+                boolean isCardio = rs.getBoolean("isCardio");
+                double length_KM = rs.getDouble("length_KM");
+                double weight = rs.getInt("weight");
+                lastWeight = weight;
+                lastLength = length_KM;
+                lastResult = isCardio;
+
+                if (isCardio) {
+                    if (length_KM > longestLength) {
+                        longestLength = length_KM;
+                    }
+                } else {
+                    if (weight > highestWeight) {
+                        highestWeight = weight;
+                    }
+                }
+            }
+
+            if (lastResult) {
+                double differenceLength = longestLength - lastLength;
+                System.out.println("Longest in KM: " + longestLength);
+                System.out.println("Latest result: " + lastLength);
+                System.out.println("Difference: " + differenceLength);
+
+            } else {
+                double differenceWeight = highestWeight - lastWeight;
+                System.out.println("Highest weight for exercise: " + highestWeight);
+                System.out.println("Latest result: " + lastWeight);
+                System.out.println("Difference: " + differenceWeight);
+            }
+
+        }catch (SQLException sql){
+            sql.printStackTrace();
+        }
+
+
+    }
+
 
     public boolean createSession(int SessionID, String date, int durationInMinutes, int form, int performance,
                          boolean isTemplate, boolean isOutdoor, int temperature, String weather, int airQuality, int ventilation,

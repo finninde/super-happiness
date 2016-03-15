@@ -10,7 +10,7 @@ public class TextUserInterface {
                     "1: Create a new session\n" +
                     "2: Copy from existing session\n" +
                     "3: Modify a previous session\n" +
-                    "4: get monthly best\n" +
+                    "4: Compare last result with best\n" +
                     "5: Exit this abomination\n" +
                     "Write your choice here: ";
     Database database = null;
@@ -41,8 +41,7 @@ public class TextUserInterface {
                     System.out.println("Not yet implemented");
                     break;
                 case 4:
-                    //TODO: call proper function
-                    System.out.println("Not yet implemented");
+                    compareResult(reader, this.database);
                     break;
                 case 5:
                     System.out.println("goodbye!");
@@ -50,6 +49,10 @@ public class TextUserInterface {
                     break;
             }
         }
+    }
+
+    public static void compareResult(Scanner reader, Database database){
+        database.compareResult();
     }
 
     public static boolean createSession(Scanner reader, Database database) {
