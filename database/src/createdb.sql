@@ -1,10 +1,3 @@
-
-CREATE TABLE test(
-  ID int NOT NULL,
-  finnerkul INT,
-  PRIMARY KEY (ID)
-);
-
 CREATE TABLE session(
   sessionID int NOT NULL,
   date VARCHAR(50) NOT NULL,
@@ -39,7 +32,7 @@ CREATE TABLE exercise(
 );
 CREATE TABLE exerciseresult(
   exerciseresultID int  NOT NULL,
-  PRIMARY KEY(goalID),
+  PRIMARY KEY(exerciseresultID),
   isCardio        BOOL,
   length_KM    double    NOT NULL,
   length_minutes    int    NOT NULL,
@@ -63,8 +56,8 @@ ADD FOREIGN KEY fk_name(sessionID) REFERENCES db.session(sessionID)
 ;
 
 ALTER TABLE db.exercise
-ADD COLUMN goalID int,
-ADD FOREIGN KEY fk_name1(goalID) REFERENCES db.exerciseresult(exerciseresultID)
+ADD COLUMN exerciseresultID int,
+ADD FOREIGN KEY fk_name1(exerciseresultID) REFERENCES db.exerciseresult(exerciseresultID)
 ;
 
 ALTER TABLE db.exercise
@@ -91,5 +84,3 @@ ALTER TABLE db.groups
 ADD COLUMN exercise VarChar(50),
 ADD FOREIGN KEY fk_name2(exercise) REFERENCES db.exercise(name)
 ;
-INSERT INTO exercise (name, description, isCardio, length_KM, length_minutes, weight, reps, sets) VALUES ("Gainz ecercise", "SUPER STRENGTH Maximizes gains", FALSE , 0, 30, 420, 12, 4);
-INSERT INTO exercise (name, description, isCardio, length_KM, length_minutes, weight, reps, sets) VALUES ("Super Cardio", "SUPER CARDIO Maximizes air intake", TRUE , 420, 9000, 0, 1, 1);
