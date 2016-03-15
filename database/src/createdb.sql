@@ -1,6 +1,6 @@
 CREATE TABLE session(
   sessionID int NOT NULL,
-  date date NOT NULL,
+  date VarChat(50) NOT NULL,
   durationInMinutes int NOT NULL,
   form tinyint,
   performance tinyint,
